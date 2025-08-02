@@ -6,8 +6,9 @@ const isPublicRoute = createRouteMatcher([
   "/sign-up(.*)",
   "/",
   "/home",
+  //add more routes if u have more page
 ]);
-const isPublicApiRoute = createRouteMatcher(["/api/videos"]);
+const isPublicApiRoute = createRouteMatcher(["/api/video"]);
 
 export default clerkMiddleware(async (auth, req) => {
   const { userId } = await auth();
@@ -15,6 +16,7 @@ export default clerkMiddleware(async (auth, req) => {
   const isAccessingDashboard = currentUrl.pathname === "/home";
   const isApiRequest = currentUrl.pathname.startsWith("/api");
 
+  //if user loged in
   if (userId && isPublicRoute(req) && !isAccessingDashboard) {
     return NextResponse.redirect(new URL("/home ", req.url));
   }
@@ -31,6 +33,7 @@ export default clerkMiddleware(async (auth, req) => {
   }
   return NextResponse.next();
 });
+
 
 export const config = {
   matcher: [
